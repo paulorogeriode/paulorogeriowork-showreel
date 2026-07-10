@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0a0a;
+  --fg: #f0f0f0;
+  --muted: #666666;
+  --accent: #f0f0f0;
+  --border: #1a1a1a;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --font-sans: var(--font-inter-tight), sans-serif;
+  --font-display: var(--font-inter-tight), sans-serif;
+  --font-body: var(--font-inter-tight), sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter-tight), sans-serif;
+}
+
+::selection {
+  background: rgba(240, 240, 240, 0.15);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes page-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-page-in {
+  animation: page-in 0.4s ease;
+}
