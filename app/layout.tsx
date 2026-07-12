@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter_Tight } from "next/font/google";
+import { Inter_Tight, Inter } from "next/font/google";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -7,6 +7,13 @@ const interTight = Inter_Tight({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   style: ["normal", "italic"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal"],
 });
 
 const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? "Portfólio";
@@ -41,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${interTight.variable} h-full antialiased`}
+      className={`${interTight.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         <div className="animate-page-in">{children}</div>
