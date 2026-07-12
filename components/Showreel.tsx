@@ -61,7 +61,7 @@ export function Showreel({ vimeoUrl }: ShowreelProps) {
 
           {/* Texto central */}
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-            <span className="font-display font-light text-4xl md:text-6xl lg:text-7xl tracking-tight text-fg">
+            <span className="font-inter font-normal text-4xl md:text-6xl lg:text-7xl tracking-tight text-fg">
               Showreel
             </span>
 
