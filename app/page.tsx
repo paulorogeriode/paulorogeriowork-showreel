@@ -3,7 +3,10 @@ import { Sidebar } from "@/components/Sidebar"
 import { ProjectGrid } from "@/components/ProjectGrid"
 import { LayoutToggle } from "@/components/LayoutToggle"
 import { AvatarImage } from "@/components/AvatarImage"
+import { Showreel } from "@/components/Showreel"
 import Link from "next/link"
+
+const SHOWREEL_VIMEO_URL = "https://vimeo.com/1201257181"
 
 export const revalidate = 60
 
@@ -44,6 +47,8 @@ export default async function HomePage() {
         <div className="hidden md:flex sticky top-0 z-30 justify-end px-3 py-2 bg-bg/80 backdrop-blur-sm border-b border-border">
           <LayoutToggle />
         </div>
+
+        <Showreel vimeoUrl={SHOWREEL_VIMEO_URL} />
 
         <ProjectGrid projects={projects} />
       </main>
