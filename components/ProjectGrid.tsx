@@ -15,8 +15,31 @@ const horizontalWidths: Record<GridSize, string> = {
   large:  '520px',
 }
 
+// CSS multi-column (`columns-N`) fills one column top-to-bottom before
+// moving to the next, which breaks reading order (Order 1,2,3,4 ends up
+// as col1: 1,2,3 / col2: 4,5,6 instead of row-major). Distributing items
+// into explicit columns round-robin keeps them in the intended Order.
+function distributeColumns(projects: Project[], columnCount: number) {
+  const columns: { project: Project; index: number }[][] = Array.from({ length: columnCount }, () => [])
+  projects.forEach((project, i) => columns[i % columnCount].push({ project, index: i }))
+  return columns
+}
+
+function useColumnCount() {
+  const [columns, setColumns] = useState(2)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const update = () => setColumns(mq.matches ? 3 : 2)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return columns
+}
+
 export function ProjectGrid({ projects }: ProjectGridProps) {
   const { mode } = useLayoutStore()
+  const columnCount = useColumnCount()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [hasScrolled, setHasScrolled] = useState(false)
 
@@ -90,20 +113,18 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
     )
   }
 
-  /* ── MODO MASONRY (CSS columns) ───────────────────────── */
+  /* ── MODO MASONRY (colunas reais, ordem preservada) ─────── */
+  const columns = distributeColumns(projects, columnCount)
+
   return (
-    <div
-      key="grid"
-      className="animate-fade-in p-[3px] columns-2 md:columns-3"
-      style={{ columnGap: '3px' }}
-    >
-      {projects.map((project, i) => (
-        <div
-          key={project.id}
-          className="break-inside-avoid mb-[3px] animate-fade-in"
-          style={{ animationDelay: `${i * 50}ms` }}
-        >
-          <ProjectCard project={project} priority={i < 4} />
+    <div key="grid" className="animate-fade-in p-[3px] flex gap-[3px]">
+      {columns.map((column, colIdx) => (
+        <div key={colIdx} className="flex-1 min-w-0 flex flex-col gap-[3px]">
+          {column.map(({ project, index }) => (
+            <div key={project.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+              <ProjectCard project={project} priority={index < 4} />
+            </div>
+          ))}
         </div>
       ))}
     </div>
